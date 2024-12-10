@@ -7,28 +7,6 @@
 - U pdate article ✅
 - D elete article ✅
 
-```
-uh..oh!! can't deploy!! hahahaha damn son! no one's gonna carry the boats!!
-currently having issues with "mysqlclient" requirement causing issues and errors upon deployment!
-of course, i don't want to deploy mysql database on non free hosting platforms
-just so that i can get my simple crud app running on the web..
-however, i found a free alternative.. "pythonanywhere.com". although it can work.
-it's not worth the trouble. the free account is slow and service would be poor.
-
-SOLUTION: switching from "mysql" to "mongodb" instead
-```
-##### why using mysql is a problem in deployment:
-```
-MySQL Server Accessibility:
-
-Vercel is a serverless platform, and it does not allow persistent connections
-to databases like MySQL by default.However, if you're using flask_mysqldb with a MySQL database,
-you need to ensure your MySQL database is hosted externally,
-such as on a cloud service like PlanetScale, Amazon RDS, MySQL on PythonAnywhere, or ClearDB.
-It cannot be a local MySQL server running on Vercel because Vercel’s infrastructure is stateless
-and does not support long-lived connections or persistent local databases.
-```
-
 # frontend
 
 - read all articles ✅
@@ -38,11 +16,6 @@ and does not support long-lived connections or persistent local databases.
 - update article ✅
 - delete article ✅
 
-# reference:
-```
-https://www.youtube.com/watch?v=mEUSNId1Hfc
-```
----
 
 ## in order to run the backend:
 
