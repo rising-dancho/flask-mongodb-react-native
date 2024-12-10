@@ -1,60 +1,45 @@
 from flask import Flask, jsonify, request
-from flask_sqlalchemy import SQLAlchemy
+from pymongo.mongo_client import MongoClient
+from pymongo.server_api import ServerApi
+from bson.objectid import ObjectId
 import datetime
-from flask_marshmallow import Marshmallow
 from flask_cors import CORS
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:@localhost:3306/flask"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-
-db = SQLAlchemy(app)
-ma = Marshmallow(app)
-
-
-class Articles(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100))
-    body = db.Column(db.Text())
-    date = db.Column(db.DateTime, default=datetime.datetime.now)
-
-    def __init__(self, title, body):
-        self.title = title
-        self.body = body
-
-
-class ArticleSchema(ma.Schema):
-    class Meta:
-        fields = ("id", "title", "body", "date")
-
-
-article_schema = ArticleSchema()
-articles_schema = ArticleSchema(many=True)
-
+# MongoDB connection URI
+uri = os.getenv("MONGO_URI")
+client = MongoClient(uri, server_api=ServerApi("1"))
+db = client.flask_database  # MongoDB database
+todos = db.todos  # MongoDB collection
 
 @app.route("/", methods=["GET"])
 def home():
-    return jsonify({"message": "Welcome to the Flask API!"})
-
+    return jsonify({"message": "Welcome to the Flask API with MongoDB!"})
 
 @app.route("/get", methods=["GET"])
 def get_articles():
-    all_articles = Articles.query.all()
-    results = articles_schema.dump(all_articles)
-    return jsonify(results)
-
+    all_todos = list(todos.find())
+    for todo in all_todos:
+        todo["_id"] = str(todo["_id"])
+    return jsonify(all_todos)
 
 @app.route("/get/<id>", methods=["GET"])
 def get_single_article(id):
-    print("Getting article with ID: {id}")
-    article = Articles.query.get(id)
-    if article:
-        return article_schema.jsonify(article)
-    else:
-        return jsonify({"error": "Article not found"}), 404
-
+    try:
+        todo = todos.find_one({"_id": ObjectId(id)})
+        if todo:
+            todo["_id"] = str(todo["_id"])
+            return jsonify(todo)
+        else:
+            return jsonify({"error": "Todo not found"}), 404
+    except Exception as e:
+        return jsonify({"error": "Invalid ID format"}), 400
 
 @app.route("/add", methods=["POST"])
 def add_article():
@@ -65,41 +50,51 @@ def add_article():
         if not title or not body:
             return jsonify({"error": "Title and body are required"}), 400
 
-        articles = Articles(title, body)
-        db.session.add(articles)
-        db.session.commit()
-        return article_schema.jsonify(articles)
+        new_todo = {
+            "title": title,
+            "body": body,
+            "date": datetime.datetime.now()
+        }
+
+        result = todos.insert_one(new_todo)
+        new_todo["_id"] = str(result.inserted_id)
+        return jsonify(new_todo)
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
 @app.route("/update/<id>", methods=["PUT"])
 def update_article(id):
-    article = Articles.query.get(id)
-    if not article:
-        return jsonify({"error": "Article not found"}), 404
+    try:
+        title = request.json.get("title")
+        body = request.json.get("body")
 
-    title = request.json.get("title")
-    body = request.json.get("body")
+        if not title or not body:
+            return jsonify({"error": "Title and body are required"}), 400
 
-    if not title or not body:
-        return jsonify({"error": "Title and body are required"}), 400
+        updated_todo = todos.find_one_and_update(
+            {"_id": ObjectId(id)},
+            {"$set": {"title": title, "body": body}},
+            return_document=True
+        )
 
-    article.title = title
-    article.body = body
-    db.session.commit()
-    return article_schema.jsonify(article)
-
+        if updated_todo:
+            updated_todo["_id"] = str(updated_todo["_id"])
+            return jsonify(updated_todo)
+        else:
+            return jsonify({"error": "Todo not found"}), 404
+    except Exception as e:
+        return jsonify({"error": "Invalid ID format"}), 400
 
 @app.route("/delete/<id>", methods=["DELETE"])
 def delete_article(id):
-    article = Articles.query.get(id)
-    db.session.delete(article)
-    db.session.commit()
-    return article_schema.jsonify({"msg": "Delete Successful!"})
-
+    try:
+        result = todos.delete_one({"_id": ObjectId(id)})
+        if result.deleted_count > 0:
+            return jsonify({"msg": "Delete Successful!"})
+        else:
+            return jsonify({"error": "Todo not found"}), 404
+    except Exception as e:
+        return jsonify({"error": "Invalid ID format"}), 400
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(host="0.0.0.0", debug=True)

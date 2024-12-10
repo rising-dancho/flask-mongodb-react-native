@@ -1,1 +1,0 @@
-# flask-mongodb-react-native
