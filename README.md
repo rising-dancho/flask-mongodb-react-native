@@ -84,6 +84,9 @@ Lib/site-packages/
 # Windows image file caches
 Thumbs.db
 
+# Environment Variable
+.env
+
 ```
 
 ### creating requirements.txt
