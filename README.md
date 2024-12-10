@@ -20,7 +20,9 @@
 ## in order to run the backend:
 
 ##### make sure you have your Mongodb Atlas account ready:
-- make sure you have `XAMPP` with `MySQL` and `Apache` running on the localhost. (so that you have access to `PhpMyAdmin`: create a new table there and name it `flask`)
+- make sure to signup for a mongodb `Atlas` database account. signup here: <a href="https://www.mongodb.com">www.mongodb.com</a>
+- setup your `Cluster` so you can get your own (python version) `connection string`
+- 
 ##### install python inorder to run the backend:
 - python must also be installed on your machine (tick the `PATH` checkbox before installing python)
 - create the `virtual environment`, activate the virtual environment using the `Command Prompt` (make sure you are in the `Scripts` directory where `activate.bat` is located)
