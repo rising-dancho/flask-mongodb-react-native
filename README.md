@@ -23,7 +23,9 @@
 - make sure to signup for a mongodb `Atlas` database account. signup here: <a href="https://www.mongodb.com">www.mongodb.com</a>
 - setup your `Cluster` so you can get your own (python version) `connection string`
 - once you have your connection string, create a `.env` file in the root directory of the `backend` folder.
-- inside the `.env` file paste your connection string, like this (use the exact key name pls):   
+- inside the `.env` file paste your connection string,
+like this (use the exact key name pls): `MONGO_URI=mongodb+srv://<your_username>:<your_password>@cluster0.hg9gr.mongodb.net/<database_name_that_you_want>?retryWrites=true&w=majority&appName=Cluster0`
+
 ##### install python inorder to run the backend:
 - python must also be installed on your machine (tick the `PATH` checkbox before installing python)
 - create the `virtual environment`, activate the virtual environment using the `Command Prompt` (make sure you are in the `Scripts` directory where `activate.bat` is located)
