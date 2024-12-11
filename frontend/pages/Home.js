@@ -7,7 +7,7 @@ function Home({ navigation }) {
   const [loading, setLoading] = useState(true);
 
   const loadData = () => {
-    fetch('http://127.0.0.1:5000/get', {
+    fetch('https://mongodb-flask-backend.up.railway.app/get', {
       method: 'GET',
     })
       .then((res) => res.json())

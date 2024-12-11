@@ -9,7 +9,7 @@ function Edit({ route, navigation }) {
   const [body, setBody] = useState(data.body);
 
   const updateData = () => {
-    fetch(`http://127.0.0.1:5000/update/${data.id}`, {
+    fetch(`https://mongodb-flask-backend.up.railway.app/update/${data.id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

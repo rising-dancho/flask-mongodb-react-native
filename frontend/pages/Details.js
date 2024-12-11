@@ -6,7 +6,7 @@ function Details({ route, navigation }) {
   const data = route.params.data;
 
   const deleteData = () => {
-    fetch(`http://127.0.0.1:5000/delete/${data.id}`, {
+    fetch(`https://mongodb-flask-backend.up.railway.app/delete/${data.id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

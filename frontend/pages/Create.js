@@ -7,7 +7,7 @@ function Create({ navigation }) {
   const [body, setBody] = useState('');
 
   const insertData = () => {
-    fetch('http://127.0.0.1:5000/add', {
+    fetch('https://mongodb-flask-backend.up.railway.app/add', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
