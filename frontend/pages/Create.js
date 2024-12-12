@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Text } from 'react-native';
-import { Button } from 'react-native-paper';
+import { View, StyleSheet, Text } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
 
 function Create({ navigation }) {
   const [title, setTitle] = useState('');
@@ -26,7 +26,6 @@ function Create({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text>Title</Text>
       <TextInput
         style={styles.inputStyle}
         label="Title"
@@ -34,7 +33,6 @@ function Create({ navigation }) {
         mode="outlined"
         onChangeText={(text) => setTitle(text)}
       />
-      <Text>Body</Text>
       <TextInput
         style={styles.inputStyle}
         label="Description"
@@ -61,8 +59,6 @@ const styles = StyleSheet.create({
   container: { margin: 10, marginTop: 22 },
   inputStyle: {
     marginTop: 6,
-    backgroundColor: '#ccc',
-    borderRadius: 4,
   },
   btnStyle: {
     marginTop: 12,
