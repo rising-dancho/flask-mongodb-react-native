@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "article",
+    "name": "Todo App",
     "slug": "article",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.adfinem07.article"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "501bfc1f-e33e-4e89-81be-577d7958da7b"
+      }
     }
   }
 }

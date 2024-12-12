@@ -4,12 +4,14 @@ import { TextInput, Button } from 'react-native-paper';
 
 function Edit({ route, navigation }) {
   const data = route.params.data;
+  console.log('Route params:', route.params);
+  console.log('Data:', data);
 
   const [title, setTitle] = useState(data.title);
   const [body, setBody] = useState(data.body);
 
   const updateData = () => {
-    fetch(`https://mongodb-flask-backend.up.railway.app/update/${data.id}`, {
+    fetch(`https://mongodb-flask-backend.up.railway.app/update/${data._id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

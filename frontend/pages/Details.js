@@ -6,13 +6,13 @@ function Details({ route, navigation }) {
   const data = route.params.data;
 
   const deleteData = () => {
-    fetch(`https://mongodb-flask-backend.up.railway.app/delete/${data.id}`, {
+    fetch(`https://mongodb-flask-backend.up.railway.app/delete/${data._id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     })
-      .then((data) => {
+      .then(() => {
         navigation.navigate('Home');
       })
       .catch((error) => console.log(error));
